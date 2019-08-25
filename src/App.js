@@ -1,10 +1,24 @@
 import React from "react";
-import { Input, Button, Checkbox, Radio, Typography } from "antd";
+import {
+  Input,
+  Button,
+  Checkbox,
+  Radio,
+  Typography,
+  Icon,
+  Tooltip,
+  Select,
+  Row,
+  Col,
+  Card,
+  Form
+} from "antd";
 
 import { app } from "./app.module.scss";
-import { Array } from "core-js";
 
 const { Title } = Typography;
+const { Search } = Input;
+const { Option } = Select;
 
 class App extends React.Component {
   state = {
@@ -16,34 +30,7 @@ class App extends React.Component {
     symbols: true
   };
 
-  generatePassword = () => {
-    const alphabet = "abcdefghijklmnopqrstuvwxyz";
-    const numbers = "0123456789";
-    const symbols = `"!@#&()–[{}]:;',?/*~$^+=<>`;
-    const sectionSize = this.state.length / 4;
-
-    const lowerCaseArr = new Array(sectionSize);
-    const upperCaseArr = new Array(sectionSize);
-    const numArr = new Array(sectionSize);
-    const symbolArr = new Array(sectionSize);
-
-    for (let i = 0; i < sectionSize; i++) {
-      lowerCaseArr[i] = alphabet[Math.floor(Math.random() * 24 + 1)];
-      upperCaseArr[i] = alphabet[
-        Math.floor(Math.random() * 24 + 1)
-      ].toUpperCase();
-      numArr[i] = numbers[Math.floor(Math.random() * 9 + 1)];
-      symbolArr[i] = symbols[Math.floor(Math.random() * 25 + 1)];
-    }
-
-    const fullArr = lowerCaseArr
-      .concat(upperCaseArr)
-      .concat(numArr)
-      .concat(symbolArr);
-    fullArr.sort(() => Math.random() - 0.5);
-    console.log();
-    this.setState({ ...this.state, password: fullArr.join("") });
-  };
+  generatePassword = () => {};
 
   onSecurityChangeHandler = type => {
     switch (type) {
@@ -70,58 +57,101 @@ class App extends React.Component {
   render() {
     return (
       <div className={app}>
-        <Input
-          size='large'
-          placeholder='Basic usage'
-          style={{ marginBottom: 30 }}
-          value={this.state.password}
-        />
-        <Checkbox
-          checked={this.state.lowercase}
-          onChange={() => this.onSecurityChangeHandler("lowercase")}
-        >
-          lowercase Charcaters
-        </Checkbox>
-        <Checkbox
-          checked={this.state.uppercase}
-          onChange={() => this.onSecurityChangeHandler("uppercase")}
-        >
-          Uppercase Characters
-        </Checkbox>
-        <Checkbox
-          checked={this.state.numbers}
-          onChange={() => this.onSecurityChangeHandler("numbers")}
-        >
-          Numbers
-        </Checkbox>
-        <Checkbox
-          checked={this.state.symbols}
-          onChange={() => this.onSecurityChangeHandler("symbols")}
-        >
-          Symbols
-        </Checkbox>
-        <Title level={3} style={{ marginTop: 30, marginBottom: 30 }}>
-          Select The Legth
-        </Title>
-        <Radio.Group
-          value={this.state.length}
-          onChange={e => this.lengthChangeHandler(e)}
-        >
-          <Radio value={8}>8</Radio>
-          <Radio value={16}>16</Radio>
-          <Radio value={24}>24</Radio>
-          <Radio value={32}>32</Radio>
-        </Radio.Group>
-        <Button
-          size='large'
-          type='danger'
-          icon='login'
-          style={{ marginTop: 30 }}
-          block
-          onClick={this.generatePassword}
-        >
-          Generate Password
-        </Button>
+        <Card title='Password Generator'>
+          <Search
+            style={{ marginBottom: 30 }}
+            value={this.state.password}
+            placeholder='input search text'
+            enterButton={
+              <Button title='prompt text' type='primary' icon='copy'>
+                Copy To Clipboard
+              </Button>
+            }
+            size='large'
+            onSearch={value => console.log(value)}
+          />
+
+          <Row gutter={16}>
+            <Col span={18}>
+              <Title
+                level={4}
+                style={{ marginTop: 0, marginBottom: 10, fontWeight: 200 }}
+              >
+                Select Strongness
+              </Title>
+              <Checkbox
+                checked={this.state.lowercase}
+                onChange={() => this.onSecurityChangeHandler("lowercase")}
+                block
+              >
+                Include lowercase Charcaters ( e.g. abcdefgh )
+              </Checkbox>
+              <br />
+              <Checkbox
+                checked={this.state.uppercase}
+                onChange={() => this.onSecurityChangeHandler("uppercase")}
+              >
+                Include Uppercase Characters ( e.g. ABCDEFGH )
+              </Checkbox>
+              <br />
+              <Checkbox
+                checked={this.state.numbers}
+                onChange={() => this.onSecurityChangeHandler("numbers")}
+              >
+                Include Numbers ( e.g. 123456 )
+              </Checkbox>
+              <br />
+              <Checkbox
+                checked={this.state.symbols}
+                onChange={() => this.onSecurityChangeHandler("symbols")}
+              >
+                Include Symbols ( e.g. @#$% )
+              </Checkbox>
+            </Col>
+            <Col span={6}>
+              <Title
+                level={4}
+                style={{ marginTop: 0, marginBottom: 10, fontWeight: 200 }}
+              >
+                Select The Legth
+              </Title>
+
+              <Select
+                defaultValue='8'
+                style={{ width: 120 }}
+                onChange={e => this.lengthChangeHandler(e)}
+              >
+                {new Array(15).fill(null).map((content, index) => (
+                  <Option value={index}>{index}</Option>
+                ))}
+              </Select>
+            </Col>
+            <Col span={12}>
+              <Button
+                size='large'
+                type='primary'
+                icon='login'
+                style={{ marginTop: 30 }}
+                block
+                onClick={this.generatePassword}
+              >
+                Generate Password
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button
+                size='large'
+                type='danger'
+                icon='login'
+                style={{ marginTop: 30 }}
+                block
+                onClick={this.generatePassword}
+              >
+                Clear Password
+              </Button>
+            </Col>
+          </Row>
+        </Card>
       </div>
     );
   }
