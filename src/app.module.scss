@@ -1,5 +1,14 @@
-.app {
-  max-width: 700px;
-  margin: auto !important;
-  padding-top: 100px;
+@media screen and (min-width: 576px) {
+  .app {
+    max-width: 700px;
+    margin: 100px auto 0 !important;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 }

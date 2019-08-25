@@ -56,15 +56,36 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className={app}>
-        <Card title='Password Generator'>
+      <div>
+        <Card
+          title='Password Generator'
+          className={app}
+          actions={[
+            <Button
+              size='large'
+              type='primary'
+              icon='fire'
+              onClick={this.generatePassword}
+            >
+              Generate Password
+            </Button>,
+            <Button
+              size='large'
+              type='danger'
+              icon='close-circle'
+              onClick={this.generatePassword}
+            >
+              Clear Password
+            </Button>
+          ]}
+        >
           <Search
             style={{ marginBottom: 30 }}
             value={this.state.password}
             placeholder='input search text'
             enterButton={
               <Button title='prompt text' type='primary' icon='copy'>
-                Copy To Clipboard
+                Copy
               </Button>
             }
             size='large'
@@ -72,7 +93,7 @@ class App extends React.Component {
           />
 
           <Row gutter={16}>
-            <Col span={18}>
+            <Col md={18} sm={24} style={{ marginBottom: 20 }}>
               <Title
                 level={4}
                 style={{ marginTop: 0, marginBottom: 10, fontWeight: 200 }}
@@ -108,7 +129,7 @@ class App extends React.Component {
                 Include Symbols ( e.g. @#$% )
               </Checkbox>
             </Col>
-            <Col span={6}>
+            <Col md={6} sm={24}>
               <Title
                 level={4}
                 style={{ marginTop: 0, marginBottom: 10, fontWeight: 200 }}
@@ -121,34 +142,12 @@ class App extends React.Component {
                 style={{ width: 120 }}
                 onChange={e => this.lengthChangeHandler(e)}
               >
-                {new Array(15).fill(null).map((content, index) => (
-                  <Option value={index}>{index}</Option>
-                ))}
+                {new Array(15)
+                  .fill(null)
+                  .map((content, index) =>
+                    index > 5 ? <Option value={index}>{index}</Option> : null
+                  )}
               </Select>
-            </Col>
-            <Col span={12}>
-              <Button
-                size='large'
-                type='primary'
-                icon='login'
-                style={{ marginTop: 30 }}
-                block
-                onClick={this.generatePassword}
-              >
-                Generate Password
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button
-                size='large'
-                type='danger'
-                icon='login'
-                style={{ marginTop: 30 }}
-                block
-                onClick={this.generatePassword}
-              >
-                Clear Password
-              </Button>
             </Col>
           </Row>
         </Card>
